@@ -1,0 +1,212 @@
+[gd_scene load_steps=8 format=3 uid="uid://bkwwb30ptqbb7"]
+
+[ext_resource type="Theme" uid="uid://78u2yj2mmij5" path="res://theme/theme.theme" id="2"]
+[ext_resource type="Script" path="res://scripts/ui/Menu.gd" id="2_cj8te"]
+[ext_resource type="AudioStream" uid="uid://b4hykk5abarui" path="res://sounds/ui/pluck.ogg" id="3_pax7v"]
+[ext_resource type="FontFile" uid="uid://dlmuovwyasdrt" path="res://theme/fonts/roboto/Roboto-Regular.ttf" id="5_abn0c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xyeq7"]
+bg_color = Color(0, 0, 0, 0.25098)
+
+[sub_resource type="LabelSettings" id="LabelSettings_5nos1"]
+font = ExtResource("5_abn0c")
+font_size = 55
+shadow_size = 2
+shadow_color = Color(0.00784314, 0.00784314, 0.00784314, 0.12549)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nde6i"]
+
+[node name="Menu" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2")
+script = ExtResource("2_cj8te")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xyeq7")
+
+[node name="SelectionLabel" type="Label" parent="."]
+layout_mode = 0
+offset_top = -28.0
+offset_right = 12.0
+text = ">"
+horizontal_alignment = 2
+
+[node name="HoverSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_pax7v")
+volume_db = -8.0
+pitch_scale = 2.0
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_pax7v")
+volume_db = -4.0
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.133
+anchor_right = 1.0
+anchor_bottom = 0.4
+grow_horizontal = 2
+grow_vertical = 2
+text = "Title"
+label_settings = SubResource("LabelSettings_5nos1")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.4
+anchor_right = 0.75
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_nde6i")
+clip_tabs = false
+tabs_visible = false
+metadata/_edit_use_anchors_ = true
+
+[node name="MainOptions" type="VBoxContainer" parent="TabContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Play" type="Button" parent="TabContainer/MainOptions"]
+layout_mode = 2
+text = "Play"
+flat = true
+alignment = 0
+
+[node name="Resume" type="Button" parent="TabContainer/MainOptions"]
+visible = false
+layout_mode = 2
+text = "Resume"
+flat = true
+alignment = 0
+
+[node name="Settings" type="Button" parent="TabContainer/MainOptions"]
+layout_mode = 2
+text = "Settings"
+flat = true
+alignment = 0
+
+[node name="Credits" type="Button" parent="TabContainer/MainOptions"]
+layout_mode = 2
+text = "Credits"
+flat = true
+alignment = 0
+
+[node name="Leave" type="Button" parent="TabContainer/MainOptions"]
+layout_mode = 2
+text = "Leave"
+flat = true
+alignment = 0
+
+[node name="Settings" type="VBoxContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Fullscreen" type="CheckButton" parent="TabContainer/Settings"]
+layout_mode = 2
+size_flags_horizontal = 0
+button_pressed = true
+text = "Fullscreen"
+
+[node name="InvertY" type="CheckButton" parent="TabContainer/Settings"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Invert Y-Axis"
+
+[node name="FOVContainer" type="HBoxContainer" parent="TabContainer/Settings"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="FOVLabel" type="Label" parent="TabContainer/Settings/FOVContainer"]
+layout_mode = 2
+text = " Field of View"
+
+[node name="FOV" type="SpinBox" parent="TabContainer/Settings/FOVContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+min_value = 50.0
+max_value = 120.0
+value = 70.0
+select_all_on_focus = true
+
+[node name="Back" type="Button" parent="TabContainer/Settings"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Back"
+flat = true
+alignment = 0
+
+[node name="Credits" type="VBoxContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="CreditsLabel" type="RichTextLabel" parent="TabContainer/Credits"]
+layout_mode = 2
+bbcode_enabled = true
+text = " Created by
+ [url=https://craftablescience.info]craftablescience[/url]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 2
+
+[node name="Back" type="Button" parent="TabContainer/Credits"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Back"
+flat = true
+alignment = 0
+
+[node name="Leave" type="VBoxContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="WarningLabel" type="Label" parent="TabContainer/Leave"]
+layout_mode = 2
+text = "Your progress will
+not be saved."
+
+[node name="Back" type="Button" parent="TabContainer/Leave"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Back"
+flat = true
+alignment = 0
+
+[node name="Quit" type="Button" parent="TabContainer/Leave"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Leave"
+flat = true
+alignment = 0
+
+[connection signal="pressed" from="TabContainer/MainOptions/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="TabContainer/MainOptions/Resume" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="TabContainer/MainOptions/Settings" to="." method="_on_menu_button_pressed" binds= [1]]
+[connection signal="pressed" from="TabContainer/MainOptions/Credits" to="." method="_on_menu_button_pressed" binds= [2]]
+[connection signal="pressed" from="TabContainer/MainOptions/Leave" to="." method="_on_menu_button_pressed" binds= [3]]
+[connection signal="toggled" from="TabContainer/Settings/Fullscreen" to="." method="_on_fullscreen_toggled"]
+[connection signal="toggled" from="TabContainer/Settings/InvertY" to="." method="_on_invert_y_toggled"]
+[connection signal="value_changed" from="TabContainer/Settings/FOVContainer/FOV" to="." method="_on_fov_value_changed"]
+[connection signal="pressed" from="TabContainer/Settings/Back" to="." method="reset"]
+[connection signal="meta_clicked" from="TabContainer/Credits/CreditsLabel" to="." method="_on_credits_meta_clicked"]
+[connection signal="pressed" from="TabContainer/Credits/Back" to="." method="reset"]
+[connection signal="pressed" from="TabContainer/Leave/Back" to="." method="reset"]
+[connection signal="pressed" from="TabContainer/Leave/Quit" to="." method="_on_quit_pressed"]

@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://bm46i5pn5o46n"]
+
+[ext_resource type="Script" path="res://scripts/Player.gd" id="1_rx07p"]
+[ext_resource type="AudioStream" uid="uid://davr7v55yenqw" path="res://sounds/fx/footsteps/footstep.ogg" id="2_ahlqn"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_klfn6"]
+radius = 0.6
+height = 3.4
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_rx07p")
+HOLD_LERP_SPEED = 12
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+shape = SubResource("CapsuleShape3D_klfn6")
+
+[node name="RotationHelper" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 0)
+
+[node name="Camera" type="Camera3D" parent="RotationHelper"]
+unique_name_in_owner = true
+
+[node name="InteractRay" type="RayCast3D" parent="RotationHelper/Camera"]
+unique_name_in_owner = true
+target_position = Vector3(0, 0, -3.5)
+collide_with_areas = true
+collide_with_bodies = false
+debug_shape_custom_color = Color(0, 0, 1, 1)
+debug_shape_thickness = 1
+
+[node name="Footstep" type="AudioStreamPlayer" parent="."]
+process_mode = 1
+stream = ExtResource("2_ahlqn")
+volume_db = -6.0
+
+[node name="FootstepTimer" type="Timer" parent="Footstep"]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="finished" from="Footstep" to="." method="_on_footstep_finished"]
+[connection signal="timeout" from="Footstep/FootstepTimer" to="." method="_on_footstep_timer_timeout"]

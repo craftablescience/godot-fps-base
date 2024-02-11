@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=3 uid="uid://ci0isy4y115xn"]
+
+[ext_resource type="Script" path="res://scripts/Main.gd" id="1_6d5h8"]
+[ext_resource type="PackedScene" uid="uid://c4srnhdemjpl2" path="res://scenes/MapManager.tscn" id="1_ou5eh"]
+[ext_resource type="PackedScene" uid="uid://dm4sxj4cto3qp" path="res://scenes/ui/PromoMenu.tscn" id="2_e7l4k"]
+[ext_resource type="Texture2D" uid="uid://3cvvb18xaj5s" path="res://textures/ui/crosshair.png" id="3_tloga"]
+[ext_resource type="PackedScene" uid="uid://bkwwb30ptqbb7" path="res://scenes/ui/Menu.tscn" id="5_yqv5f"]
+
+[node name="Main" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6d5h8")
+
+[node name="MapManager" parent="." instance=ExtResource("1_ou5eh")]
+
+[node name="Crosshair" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_tloga")
+
+[node name="Menu" parent="." instance=ExtResource("5_yqv5f")]
+layout_mode = 1
+
+[node name="PromoMenu" parent="." instance=ExtResource("2_e7l4k")]
+visible = false
+layout_mode = 1
+
+[connection signal="game_ended" from="MapManager" to="." method="_on_map_manager_game_ended"]
+[connection signal="resume" from="Menu" to="." method="resume"]

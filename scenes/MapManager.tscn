@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4srnhdemjpl2"]
+
+[ext_resource type="Script" path="res://scripts/MapManager.gd" id="1_cwtbe"]
+[ext_resource type="PackedScene" uid="uid://bm46i5pn5o46n" path="res://scenes/Player.tscn" id="4_xipv5"]
+
+[node name="MapManager" type="Node3D"]
+process_mode = 3
+script = ExtResource("1_cwtbe")
+
+[node name="Player" parent="." instance=ExtResource("4_xipv5")]
+process_mode = 1
+floor_max_angle = 0.872665
+HOLD_LERP_SPEED = 16
+
+[node name="Fade" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
