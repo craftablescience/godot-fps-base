@@ -15,4 +15,4 @@ tools/trenchbroom/*
 !tools/trenchbroom/README.txt
 !tools/trenchbroom/games/
 tools/trenchbroom/games/*
-!tools/trenchbroom/games/gwj66
+!tools/trenchbroom/games/Qodot
