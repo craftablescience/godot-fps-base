@@ -1,6 +1,6 @@
 # Godot FPS Base
 
-A platform for my personal use, to create first-person games with Godot.
+A platform for my personal use, to create first-person games with Godot 4.
 
 ## Credits
 
