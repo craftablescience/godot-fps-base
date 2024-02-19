@@ -1,6 +1,6 @@
-# GWJ66
+# Godot FPS Base
 
-Theme: Escape
+A platform for my personal use, to create first-person games with Godot.
 
 ## Credits
 
