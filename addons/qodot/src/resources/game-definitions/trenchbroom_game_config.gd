@@ -21,7 +21,7 @@ extends Resource
 ## Icon for TrenchBroom's game list.
 @export var icon : Texture2D
 
-## Available map formats when creating a new map in TrenchBroom. The order of elements in the array is respected by TrenchBroom. The `initialmap` key value is optional.
+## Available map formats when creating a new map in Trenchbroom. The order of elements in the array is respected by Trenchbroom. The `initialmap` key value is optional.
 @export var map_formats: Array[Dictionary] = [
 	{ "format": "Valve", "initialmap": "initial_valve.map" },
 	{ "format": "Standard", "initialmap": "initial_standard.map" },
@@ -29,30 +29,34 @@ extends Resource
 	{ "format": "Quake3" }
 ]
 
-## Textures matching these patterns will be hidden from TrenchBroom.
-@export var texture_exclusion_patterns: Array[String] = ["*_ao", "*_emission", "*_heightmap", "*_metallic", "*_normal", "*_orm", "*_roughness", "*_sss"]
+## Textures matching these patterns will be hidden from Trenchbroom.
+@export var texture_exclusion_patterns: Array[String] = ["*_ao", "*_emission", "*_heightmap", "*_metallic", "*_normal", "*_orm", "*_roughness", "*_sss", "*_albedo"]
 
-## FGD resource to include with this game. If using multiple FGD resources, this should be the master FGD that contains them in the `base_fgd_files` resource array.
-@export var fgd_file : QodotFGDFile = load("res://addons/qodot/game_definitions/fgd/qodot_fgd.tres")
+## FGD resource to include with this game. If using multiple FGD resources, this should be the master FGD that contains them in the `base_fgd_files` resource array. 
+## Use only one FGD resource. Using multiple FGDs in this array does not work as intended but is left as an array for backwards compatibility.
+@export var fgd_files : Array[Resource] = [preload("res://addons/qodot/game_definitions/fgd/qodot_fgd.tres")]
 
-## Scale expression that modifies the default display scale of entities in TrenchBroom. See the [**TrenchBroom Documentation**](https://trenchbroom.github.io/manual/latest/#game_configuration_files_entities) for more information.
+## Scale expression that modifies the default display scale of entities in Trenchbroom. See the [**Trenchbroom Documentation**](https://trenchbroom.github.io/manual/latest/#game_configuration_files_entities) for more information.
 @export var entity_scale: String = "1"
 
 ## Scale of textures on new brushes.
 @export var default_uv_scale : Vector2 = Vector2(1, 1)
 
-## Arrays containing the TrenchBroomTag resource type.
+## Arrays containing the TrenchbroomTag resource type.
 @export_category("Editor hint tags")
 
-## Container for TrenchBroomTag resources that apply to brush entities.
-@export var brush_tags : Array[TrenchBroomTag] = []
+## Container for TrenchbroomTag resources that apply to brush entities.
+@export var brush_tags : Array[Resource] = []
 
-## Container for TrenchBroomTag resources that apply to textures.
-@export var face_tags : Array[TrenchBroomTag] = []
+## Container for TrenchbroomTag resources that apply to textures.
+@export var face_tags : Array[Resource] = []
+
+## Private variable for storing fgd names, used in build_class_text().
+var _fgd_filenames : Array = []
 
 ## Private default .cfg contents.
 ## See also: https://trenchbroom.github.io/manual/latest/#game_configuration_files
-const _base_text : String = """{
+var _base_text: String = """{
 	"version": 8,
 	"name": "%s",
 	"icon": "icon.png",
@@ -91,7 +95,7 @@ const _base_text : String = """{
 }
 """
 
-func _init() -> void:
+func _init():
 	if not icon:
 		if ResourceLoader.exists("res://addons/qodot/icon.png"):
 			icon = ResourceLoader.load("res://addons/qodot/icon.png")
@@ -125,7 +129,7 @@ func build_class_text() -> String:
 		if tex_pattern != texture_exclusion_patterns[-1]:
 			texture_exclusion_patterns_str += ", "
 	
-	var fgd_filename_str : String = "\"" + fgd_file.fgd_name + ".fgd\""
+	var fgd_filename_str : String = "\"" + fgd_files[0].fgd_name + ".fgd\""
 
 	var brush_tags_str = parse_tags(brush_tags)
 	var face_tags_str = parse_tags(face_tags)
@@ -196,7 +200,7 @@ func do_export_file() -> void:
 		return
 	
 	# Make sure FGD file is set
-	if !fgd_file:
+	if !fgd_files.size() or not fgd_files[0] is QodotFGDFile:
 		print("Skipping export: No FGD file")
 		return
 	
@@ -229,7 +233,7 @@ func do_export_file() -> void:
 	file = null # Official way to close files in GDscript 2
 	
 	# FGD
-	var export_fgd : QodotFGDFile = fgd_file.duplicate()
+	var export_fgd : QodotFGDFile = fgd_files[0].duplicate()
 	export_fgd.target_folder = config_folder
 	export_fgd.do_export_file()
 	print("Export complete\n")

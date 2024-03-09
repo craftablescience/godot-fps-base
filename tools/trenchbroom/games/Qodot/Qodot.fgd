@@ -1,3 +1,26 @@
+@BaseClass = Target : "Performs actions (signal callbacks, methods) on entities with a matching 'targetname'." [
+	target(string) : "Name of entity (targetname) to target." : ""
+]
+
+@BaseClass = Targetname : "Subscribes to actions (signal callbacks, reciever methods) performed by other entities with a matching 'target'." [
+	targetname(string) : "Name of target to subscribe to." : ""
+]
+
+@BaseClass color(255 255 40) = Light[
+	_color(color255) : "Light color" : "255 255 255"
+	delay(choices) : "Attenuation" = [
+		1 : "Inverse distance falloff"
+		2 : "Inverse distance squared"
+		5 : "Inverse distance squared B"
+		0 : "Linear falloff (Default)"
+		4 : "Local minlight"
+		3 : "No falloff"
+	]
+	light(integer) : "Brightness" : 300
+	mangle(string) : "Spotlight angle" : "0.00499999988824 0 0"
+	wait(integer) : "Fade distance multiplier" : 1
+]
+
 @SolidClass = worldspawn : "World Entity" [
 ]
 

@@ -6,12 +6,12 @@
 [ext_resource type="Script" path="res://addons/qodot/src/resources/game-definitions/trenchbroom_game_config.gd" id="3_8vw40"]
 [ext_resource type="Resource" uid="uid://dpjjh0hst6xj" path="res://addons/qodot/game_definitions/face_tags/clip_tag.tres" id="3_hren3"]
 [ext_resource type="Resource" uid="uid://b3ec6041xnoec" path="res://addons/qodot/game_definitions/face_tags/skip_tag.tres" id="4_y3jqb"]
-[ext_resource type="Resource" uid="uid://c36hv0o6g0udo" path="res://addons/qodot/game_definitions/fgd/qodot_fgd.tres" id="5_lycai"]
+[ext_resource type="Resource" uid="uid://c36hv0o6g0udo" path="res://addons/qodot/game_definitions/fgd/qodot_fgd.tres" id="5_lbrmn"]
 
 [resource]
 script = ExtResource("3_8vw40")
 export_file = false
-trenchbroom_games_folder = "C:/Users/Brend/OneDrive/Documents/Godot/gwj66/tools/trenchbroom/games"
+trenchbroom_games_folder = ""
 game_name = "Qodot"
 icon = ExtResource("2_jej4n")
 map_formats = Array[Dictionary]([{
@@ -26,9 +26,11 @@ map_formats = Array[Dictionary]([{
 }, {
 "format": "Quake3"
 }])
-texture_exclusion_patterns = Array[String](["*_ao", "*_emission", "*_heightmap", "*_metallic", "*_normal", "*_orm", "*_roughness", "*_sss"])
-fgd_file = ExtResource("5_lycai")
+texture_exclusion_patterns = Array[String](["*_ao", "*_emission", "*_heightmap", "*_metallic", "*_normal", "*_orm", "*_roughness", "*_sss", "*_albedo"])
+fgd_files = Array[Resource]([ExtResource("5_lbrmn")])
 entity_scale = "1"
 default_uv_scale = Vector2(1, 1)
-brush_tags = Array[Resource("res://addons/qodot/src/resources/game-definitions/trenchbroom/trenchbroom_tag.gd")]([ExtResource("1_bjrlk"), ExtResource("2_kk04y")])
-face_tags = Array[Resource("res://addons/qodot/src/resources/game-definitions/trenchbroom/trenchbroom_tag.gd")]([ExtResource("3_hren3"), ExtResource("4_y3jqb")])
+brush_tags = Array[Resource]([ExtResource("1_bjrlk"), ExtResource("2_kk04y")])
+face_tags = Array[Resource]([ExtResource("3_hren3"), ExtResource("4_y3jqb")])
+face_attrib_surface_flags = Array[Resource]([])
+face_attrib_content_flags = Array[Resource]([])
