@@ -16,6 +16,8 @@ const HOLD_LERP_SPEED := 10
 
 const FOOTSTEP_MIN_WAIT_TIME := 0.1
 const FOOTSTEP_MAX_WAIT_TIME := 0.2
+const FOOTSTEP_MIN_WAIT_TIME_WALK := 0.3
+const FOOTSTEP_MAX_WAIT_TIME_WALK := 0.4
 const AUDIO_RAND_MIN_PITCH_SCALE := 0.9
 const AUDIO_RAND_MAX_PITCH_SCALE := 1.1
 
@@ -99,7 +101,10 @@ func update_velocity_air(wish_dir: Vector3, delta: float) -> Vector3:
 func _process(_delta: float) -> void:
 	if not footstep_active and is_on_floor() and get_real_velocity().length() > 0.0 and %Camera.current:
 		footstep_active = true
-		$Footstep/FootstepTimer.start(RNG.randf_range(FOOTSTEP_MIN_WAIT_TIME, FOOTSTEP_MAX_WAIT_TIME))
+		if is_walking:
+			$Footstep/FootstepTimer.start(RNG.randf_range(FOOTSTEP_MIN_WAIT_TIME_WALK, FOOTSTEP_MAX_WAIT_TIME_WALK))
+		else:
+			$Footstep/FootstepTimer.start(RNG.randf_range(FOOTSTEP_MIN_WAIT_TIME, FOOTSTEP_MAX_WAIT_TIME))
 
 
 func _physics_process(delta: float) -> void:
