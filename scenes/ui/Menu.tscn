@@ -74,11 +74,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_nde6i")
+current_tab = 2
 clip_tabs = false
 tabs_visible = false
 metadata/_edit_use_anchors_ = true
 
 [node name="MainOptions" type="VBoxContainer" parent="TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 16
 
@@ -153,15 +155,13 @@ flat = true
 alignment = 0
 
 [node name="Credits" type="VBoxContainer" parent="TabContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 16
 
 [node name="CreditsLabel" type="RichTextLabel" parent="TabContainer/Credits"]
 layout_mode = 2
 bbcode_enabled = true
-text = " Created by
- [url=https://craftablescience.info]craftablescience[/url]"
+text = "Uses the Godot FPS Base template, created by [url=https://craftablescience.info]craftablescience[/url]."
 fit_content = true
 scroll_active = false
 autowrap_mode = 2
@@ -180,8 +180,7 @@ theme_override_constants/separation = 16
 
 [node name="WarningLabel" type="Label" parent="TabContainer/Leave"]
 layout_mode = 2
-text = "Your progress will
-not be saved."
+text = "Your progress will not be saved."
 
 [node name="Back" type="Button" parent="TabContainer/Leave"]
 layout_mode = 2
