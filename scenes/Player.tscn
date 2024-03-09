@@ -9,7 +9,6 @@ height = 3.4
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_rx07p")
-HOLD_LERP_SPEED = 12
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
