@@ -1,7 +1,7 @@
 extends Control
 
 
-signal resume
+signal resume()
 
 
 func fixup_all_buttons(n: Node) -> void:
