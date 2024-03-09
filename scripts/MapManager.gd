@@ -57,12 +57,12 @@ func show_preview_camera(fade: Vector3 = Vector3()) -> void:
 			if fade.y <= 0.0 and fade.z <= 0.0:
 				$Fade.color = Color(0,0,0,0)
 			else:
-				var tween := get_tree().create_tween().bind_node(self)
+				var fadein_tween := get_tree().create_tween().bind_node(self)
 				if fade.y > 0.0:
-					tween.tween_property($Fade, "color", Color(0,0,0,1), fade.y)
+					fadein_tween.tween_property($Fade, "color", Color(0,0,0,1), fade.y)
 				if fade.z > 0.0:
-					tween.tween_property($Fade, "color", Color(0,0,0,0), fade.z)
-				tween.play()
+					fadein_tween.tween_property($Fade, "color", Color(0,0,0,0), fade.z)
+				fadein_tween.play()
 		else:
 			printerr("Attempted to show preview camera, but map has not been loaded!")
 	
@@ -71,10 +71,10 @@ func show_preview_camera(fade: Vector3 = Vector3()) -> void:
 		swap_camera.call()
 		return
 	
-	var tween := get_tree().create_tween().bind_node(self)
-	tween.tween_property($Fade, "color", Color(0,0,0,1), fade.x)
-	tween.tween_callback(swap_camera)
-	tween.play()
+	var fadeout_tween := get_tree().create_tween().bind_node(self)
+	fadeout_tween.tween_property($Fade, "color", Color(0,0,0,1), fade.x)
+	fadeout_tween.tween_callback(swap_camera)
+	fadeout_tween.play()
 
 
 func spawn_player(fade: Vector3 = Vector3()) -> void:
@@ -86,12 +86,12 @@ func spawn_player(fade: Vector3 = Vector3()) -> void:
 			if fade.y <= 0.0 and fade.z <= 0.0:
 				$Fade.color = Color(0,0,0,0)
 			else:
-				var tween := get_tree().create_tween().bind_node(self)
+				var fadein_tween := get_tree().create_tween().bind_node(self)
 				if fade.y > 0.0:
-					tween.tween_property($Fade, "color", Color(0,0,0,1), fade.y)
+					fadein_tween.tween_property($Fade, "color", Color(0,0,0,1), fade.y)
 				if fade.z > 0.0:
-					tween.tween_property($Fade, "color", Color(0,0,0,0), fade.z)
-				tween.play()
+					fadein_tween.tween_property($Fade, "color", Color(0,0,0,0), fade.z)
+				fadein_tween.play()
 		else:
 			printerr("Attempted to spawn player, but map has not been loaded!")
 	
@@ -100,10 +100,10 @@ func spawn_player(fade: Vector3 = Vector3()) -> void:
 		swap_camera.call()
 		return
 	
-	var tween := get_tree().create_tween().bind_node(self)
-	tween.tween_property($Fade, "color", Color(0,0,0,1), fade.x)
-	tween.tween_callback(swap_camera)
-	tween.play()
+	var fadeout_tween := get_tree().create_tween().bind_node(self)
+	fadeout_tween.tween_property($Fade, "color", Color(0,0,0,1), fade.x)
+	fadeout_tween.tween_callback(swap_camera)
+	fadeout_tween.play()
 
 
 func get_player() -> CharacterBody3D:
