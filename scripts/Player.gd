@@ -1,13 +1,14 @@
 extends CharacterBody3D
 
 # Player movement code is modified from https://aneacsu.com/blog/2023/04/09/quake-movement-godot
+# Constants have been tweaked for better movement (in my opinion)
 
 const MAX_VEL_AIR := 0.6
 const MAX_VEL_GROUND := 6.0
 const MAX_ACCEL := 10 * MAX_VEL_GROUND
-const FRICTION := 4
+const FRICTION := 9
 const STOP_SPEED := 1.5
-const WALK_MULTIPLIER := 0.8
+const WALK_MULTIPLIER := 0.85
 
 const MOUSE_SENSITIVITY := 0.1
 
