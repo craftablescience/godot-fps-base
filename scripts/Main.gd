@@ -3,9 +3,14 @@ extends Control
 
 # state
 var game_has_started := false
+var game_has_ended := false
+var pause_is_allowed := true
 
 
 func pause() -> void:
+	if not pause_is_allowed:
+		return
+	
 	get_tree().paused = true
 	$Crosshair.hide()
 	$MapManager.get_player().hide_ui()
@@ -15,6 +20,9 @@ func pause() -> void:
 
 
 func resume() -> void:
+	if game_has_ended:
+		return
+	
 	var fadeout := 1.0
 	
 	if not game_has_started:
@@ -35,29 +43,60 @@ func resume() -> void:
 
 
 func _ready() -> void:
-	if Globals.DEBUG_OPTS["start_windowed"]:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-		DisplayServer.window_set_size(Vector2i(640, 480))
-		
-		var screen_size = DisplayServer.screen_get_size(DisplayServer.window_get_current_screen())
-		var window_size = DisplayServer.window_get_size_with_decorations()
-		DisplayServer.window_set_position(screen_size / 2 - window_size / 2)
+	if Globals.GLOBAL_OPTS["show_debug_stats"]:
+		$Debug.show()
+	elif not Globals.DEBUG:
+		$Debug.queue_free()
 	
-	if not Globals.DEBUG_OPTS["force_map"].is_empty():
-		$MapManager.load_map("res://scenes/maps/%s.tscn" % Globals.DEBUG_OPTS["force_map"], Vector3(-1, -1, 1))
-	else:
-		$MapManager.load_map("res://scenes/maps/Map.tscn", Vector3(-1, -1, 1))
+	if Globals.GLOBAL_OPTS["start_windowed"]:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MAXIMIZED)
 	
-	$MapManager.show_preview_camera(Vector3(-1, -1, 1))
+	$MapManager.load_map("res://scenes/maps/%s.tscn" % Globals.GLOBAL_OPTS["start_map"], Vector3(-1,-1,1))
+	$MapManager.show_preview_camera(Vector3(-1,-1,1))
 	
-	if Globals.DEBUG_OPTS["use_promo_menu"]:
+	if Globals.GLOBAL_OPTS["use_promo_menu"]:
 		$Menu.queue_free()
+		$SeizureWarning.queue_free()
 		$PromoMenu.show()
-		DisplayServer.window_set_size(Vector2i(640, 320))
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		DisplayServer.window_set_size(Vector2i(640 * 2.5, 320 * 2.5))
+		pause()
+		return
 	else:
 		$PromoMenu.queue_free()
 	
+	if Globals.GLOBAL_OPTS["skip_seizure_warning"]:
+		$SeizureWarning.queue_free()
+		$Menu.notify_menu_shown()
+	
+	$MapManager.connect("game_ended_and_we_should_show_the_credits_now", func() -> void:
+		$Menu.notify_game_ended(false)
+		$MapManager.show_preview_camera(Vector3(-1,-1,1))
+		game_has_ended = true
+		pause_is_allowed = true
+		pause())
+	
+	$MapManager.connect("game_ended_but_we_might_play_it_again", func() -> void:
+		$Menu.notify_game_ended(true)
+		$MapManager.show_preview_camera(Vector3(-1,-1,1))
+		game_has_started = false
+		game_has_ended = false
+		pause_is_allowed = true
+		pause())
+	
+	$MapManager.connect("we_are_in_a_no_pause_cutscene_now", func() -> void:
+		resume() # just to make sure
+		pause_is_allowed = false)
+	
+	$MapManager.connect("we_are_not_in_a_no_pause_cutscene_anymore", func() -> void:
+		pause_is_allowed = true)
+	
 	pause()
+
+
+func _process(_delta: float) -> void:
+	if Globals.DEBUG and Input.is_action_just_pressed("dbg_toggle"):
+		$Debug.visible = not $Debug.visible
 
 
 func _input(event: InputEvent) -> void:
@@ -68,11 +107,12 @@ func _input(event: InputEvent) -> void:
 			pause()
 
 
-func _on_map_manager_game_ended():
-	game_has_started = false
-	
-	# todo: load ending map
-	$MapManager.show_preview_camera()
-	$Menu.notify_game_ended()
-	
-	pause()
+func _on_seizure_warning_continue_to_menu() -> void:
+	$Menu.modulate = Color(1,1,1,0)
+	var tween := get_tree().create_tween().bind_node(self)
+	tween.tween_property($SeizureWarning, "modulate", Color(1,1,1,0), 0.5)
+	tween.tween_callback(func() -> void:
+		$SeizureWarning.queue_free()
+		$Menu.notify_menu_shown())
+	tween.tween_property($Menu, "modulate", Color(1,1,1,1), 0.75)
+	tween.play()

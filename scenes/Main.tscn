@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://ci0isy4y115xn"]
+[gd_scene load_steps=8 format=3 uid="uid://ci0isy4y115xn"]
 
 [ext_resource type="Script" path="res://scripts/Main.gd" id="1_6d5h8"]
 [ext_resource type="PackedScene" uid="uid://c4srnhdemjpl2" path="res://scenes/MapManager.tscn" id="1_ou5eh"]
 [ext_resource type="PackedScene" uid="uid://dm4sxj4cto3qp" path="res://scenes/ui/PromoMenu.tscn" id="2_e7l4k"]
 [ext_resource type="Texture2D" uid="uid://3cvvb18xaj5s" path="res://textures/ui/crosshair.png" id="3_tloga"]
 [ext_resource type="PackedScene" uid="uid://bkwwb30ptqbb7" path="res://scenes/ui/Menu.tscn" id="5_yqv5f"]
+[ext_resource type="PackedScene" uid="uid://ddjvh7amji0d5" path="res://scenes/ui/Debug.tscn" id="6_3ekwq"]
+[ext_resource type="PackedScene" uid="uid://b1xpaaqks4v6f" path="res://scenes/ui/SeizureWarning.tscn" id="7_3x7rn"]
 
 [node name="Main" type="Control"]
 process_mode = 3
@@ -41,5 +43,12 @@ layout_mode = 1
 visible = false
 layout_mode = 1
 
-[connection signal="game_ended" from="MapManager" to="." method="_on_map_manager_game_ended"]
+[node name="Debug" parent="." instance=ExtResource("6_3ekwq")]
+visible = false
+layout_mode = 1
+
+[node name="SeizureWarning" parent="." instance=ExtResource("7_3x7rn")]
+layout_mode = 1
+
 [connection signal="resume" from="Menu" to="." method="resume"]
+[connection signal="continue_to_menu" from="SeizureWarning" to="." method="_on_seizure_warning_continue_to_menu"]

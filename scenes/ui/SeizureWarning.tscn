@@ -1,0 +1,64 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1xpaaqks4v6f"]
+
+[ext_resource type="Theme" uid="uid://78u2yj2mmij5" path="res://theme/theme.theme" id="1_80ruw"]
+[ext_resource type="Script" path="res://scripts/ui/SeizureWarning.gd" id="2_bokqf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7k057"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fxiyr"]
+font_size = 26
+
+[node name="SeizureWarning" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_80ruw")
+script = ExtResource("2_bokqf")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7k057")
+
+[node name="Heading" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.1
+anchor_right = 1.0
+anchor_bottom = 0.2
+grow_horizontal = 2
+text = "Photosensitive Seizure Warning"
+label_settings = SubResource("LabelSettings_fxiyr")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Contents" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.3
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 200.0
+offset_right = -200.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "A small percentage of people may experience a seizure when exposed to certain visual images, including flashing lights or patterns that may appear in this game. Even people who have no history of seizures or epilepsy may have an undiagnosed condition that can cause these “photosensitive epileptic seizures” while playing video games.
+
+Immediately stop playing and consult a doctor if you experience any symptoms.
+
+This video game contains flickering lights which some people may be sensitive to. If you would like to disable this, [color=#4fcfff][url=\"disable_flicker_and_continue\"]click here[/url][/color] to continue to the game with all flickering lights disabled.
+
+
+
+[center][color=#4fcfff][url=\"continue\"]Click here to continue[/url][/color][/center]"
+
+[connection signal="meta_clicked" from="Contents" to="." method="_on_contents_meta_clicked"]

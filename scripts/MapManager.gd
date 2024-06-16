@@ -1,7 +1,10 @@
 extends Node3D
 
 
-signal game_ended()
+signal game_ended_and_we_should_show_the_credits_now()
+signal game_ended_but_we_might_play_it_again()
+signal we_are_in_a_no_pause_cutscene_now()
+signal we_are_not_in_a_no_pause_cutscene_anymore()
 
 
 var map_instance: Node3D = null
@@ -49,6 +52,10 @@ func load_map(map: String, fade: Vector3 = Vector3()) -> void:
 		tween.play()
 
 
+func get_map() -> MapRoot:
+	return map_instance
+
+
 func show_preview_camera(fade: Vector3 = Vector3()) -> void:
 	var swap_camera := func() -> void:
 		if map_instance:
@@ -89,6 +96,7 @@ func spawn_player(fade: Vector3 = Vector3()) -> void:
 				var fadein_tween := get_tree().create_tween().bind_node(self)
 				if fade.y > 0.0:
 					fadein_tween.tween_property($Fade, "color", Color(0,0,0,1), fade.y)
+				fadein_tween.tween_callback(func(): map_instance.on_spawn_player())
 				if fade.z > 0.0:
 					fadein_tween.tween_property($Fade, "color", Color(0,0,0,0), fade.z)
 				fadein_tween.play()
@@ -99,6 +107,9 @@ func spawn_player(fade: Vector3 = Vector3()) -> void:
 		$Fade.color = Color(0,0,0,1)
 		swap_camera.call()
 		return
+	
+	# HACK: use 0.251 so there's not weird sudden brightness when the menu closes
+	$Fade.color.a = 0.251
 	
 	var fadeout_tween := get_tree().create_tween().bind_node(self)
 	fadeout_tween.tween_property($Fade, "color", Color(0,0,0,1), fade.x)

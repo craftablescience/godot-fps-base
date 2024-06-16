@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bkwwb30ptqbb7"]
+[gd_scene load_steps=9 format=3 uid="uid://bkwwb30ptqbb7"]
 
 [ext_resource type="Theme" uid="uid://78u2yj2mmij5" path="res://theme/theme.theme" id="2"]
 [ext_resource type="Script" path="res://scripts/ui/Menu.gd" id="2_cj8te"]
@@ -15,6 +15,9 @@ shadow_size = 2
 shadow_color = Color(0.00784314, 0.00784314, 0.00784314, 0.12549)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nde6i"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_xqboq"]
+font_size = 14
 
 [node name="Menu" type="Control"]
 process_mode = 3
@@ -145,6 +148,22 @@ max_value = 120.0
 value = 70.0
 select_all_on_focus = true
 
+[node name="MSensContainer" type="HBoxContainer" parent="TabContainer/Settings"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="MSensLabel" type="Label" parent="TabContainer/Settings/MSensContainer"]
+layout_mode = 2
+text = "Mouse Sensitivity"
+
+[node name="MSens" type="HSlider" parent="TabContainer/Settings/MSensContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.5
+max_value = 16.0
+step = 0.2
+value = 10.1
+
 [node name="Back" type="Button" parent="TabContainer/Settings"]
 layout_mode = 2
 size_flags_horizontal = 0
@@ -195,6 +214,25 @@ text = "Leave"
 flat = true
 alignment = 0
 
+[node name="Version" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -20.0
+offset_right = -4.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "v1.0.0"
+label_settings = SubResource("LabelSettings_xqboq")
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+
 [connection signal="pressed" from="TabContainer/MainOptions/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="TabContainer/MainOptions/Resume" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="TabContainer/MainOptions/Settings" to="." method="_on_menu_button_pressed" binds= [1]]
@@ -203,6 +241,7 @@ alignment = 0
 [connection signal="toggled" from="TabContainer/Settings/Fullscreen" to="." method="_on_fullscreen_toggled"]
 [connection signal="toggled" from="TabContainer/Settings/InvertY" to="." method="_on_invert_y_toggled"]
 [connection signal="value_changed" from="TabContainer/Settings/FOVContainer/FOV" to="." method="_on_fov_value_changed"]
+[connection signal="value_changed" from="TabContainer/Settings/MSensContainer/MSens" to="." method="_on_m_sens_value_changed"]
 [connection signal="pressed" from="TabContainer/Settings/Back" to="." method="reset"]
 [connection signal="meta_clicked" from="TabContainer/Credits/CreditsLabel" to="." method="_on_credits_meta_clicked"]
 [connection signal="pressed" from="TabContainer/Credits/Back" to="." method="reset"]

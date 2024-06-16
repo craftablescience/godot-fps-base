@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 # Player movement code is modified from https://aneacsu.com/blog/2023/04/09/quake-movement-godot
-# Constants have been tweaked for better movement (in my opinion)
+# Constants have also been tweaked for better movement (in my opinion)
 
 const MAX_VEL_AIR := 0.6
 const MAX_VEL_GROUND := 6.0
@@ -9,8 +9,6 @@ const MAX_ACCEL := 10 * MAX_VEL_GROUND
 const FRICTION := 9
 const STOP_SPEED := 1.5
 const WALK_MULTIPLIER := 0.85
-
-const MOUSE_SENSITIVITY := 0.1
 
 const HOLD_LERP_SPEED := 10
 
@@ -20,6 +18,9 @@ const FOOTSTEP_MIN_WAIT_TIME_WALK := 0.3
 const FOOTSTEP_MAX_WAIT_TIME_WALK := 0.4
 const AUDIO_RAND_MIN_PITCH_SCALE := 0.9
 const AUDIO_RAND_MAX_PITCH_SCALE := 1.1
+
+const JOY_DEADZONE := 0.2
+const JOY_AXIS_SCALE := 1.0 / (1.0 - JOY_DEADZONE)
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var jump_force = sqrt(gravity * 6)
@@ -39,6 +40,7 @@ func held_is_valid() -> bool:
 
 func reset() -> void:
 	%Camera.current = true
+	rotation_degrees.y = 0
 	%RotationHelper.rotation_degrees.x = 0
 
 
@@ -57,7 +59,7 @@ func show_ui() -> void:
 
 
 func collect_inputs() -> Vector3:
-	is_jump_requested = Input.is_action_just_pressed("mv_jump")
+	is_jump_requested = Globals.GLOBAL_OPTS["player_can_jump"] && Input.is_action_just_pressed("mv_jump")
 	is_walking = Input.is_action_pressed("mv_walk")
 	
 	var input_dir := Input.get_vector("mv_left", "mv_right", "mv_fwd", "mv_back")
@@ -126,16 +128,15 @@ func _physics_process(delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		var x_rotation: float = event.relative.y * MOUSE_SENSITIVITY
+	var move_camera := func(motion: Vector2) -> void:
 		if not Globals.invert_y:
-			x_rotation *= -1
-		%RotationHelper.rotate_x(deg_to_rad(x_rotation))
-		rotate_y(deg_to_rad(-event.relative.x * MOUSE_SENSITIVITY))
-		var camera_rot: Vector3 = %RotationHelper.rotation_degrees
-		camera_rot.x = clamp(camera_rot.x, -90, 90)
-		%RotationHelper.rotation_degrees = camera_rot
+			motion.x *= -1
+		%RotationHelper.rotate_x(deg_to_rad(motion.x * Globals.mouse_sensitivity))
+		rotate_y(deg_to_rad(motion.y * Globals.mouse_sensitivity))
+		%RotationHelper.rotation_degrees.x = clamp(%RotationHelper.rotation_degrees.x, -90, 90)
 	
+	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		move_camera.call(Vector2(event.relative.y, -event.relative.x))
 	elif event.is_action_pressed("interact"):
 		if held and not held_is_valid():
 			held = null

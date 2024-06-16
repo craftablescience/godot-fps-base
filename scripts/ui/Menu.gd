@@ -39,28 +39,50 @@ func reset() -> void:
 	$TabContainer.current_tab = 0
 
 
+func notify_menu_shown() -> void:
+	$Music.play()
+
+
 func notify_game_started() -> void:
 	$TabContainer/MainOptions/Play.hide()
 	$TabContainer/MainOptions/Resume.show()
-
-
-func notify_game_ended() -> void:
-	# We don't want them to play the game again, only show Credits and Leave
-	#$TabContainer/MainOptions/Play.show()
-	$TabContainer/MainOptions/Play.hide()
-	$TabContainer/MainOptions/Resume.hide()
 	
-	$TabContainer/MainOptions/Settings.hide()
+	var tween := get_tree().create_tween().bind_node(self)
+	tween.tween_property($Music, "volume_db", -20, 1.0)
+	tween.tween_callback($Music.stop)
+	tween.play()
+
+
+func notify_game_ended(play_again: bool) -> void:
+	$TabContainer/MainOptions/Play.visible = play_again
+	$TabContainer/MainOptions/Resume.hide()
+	$TabContainer/MainOptions/Settings.visible = play_again
+	$TabContainer.current_tab = 0
+	
+	if not play_again:
+		$TabContainer/Credits/Back.text = "Quit"
+		$TabContainer/Credits/Back.connect("pressed", func() -> void: get_tree().quit())
+		$TabContainer.current_tab = 2
+	
+	$Music.playing = true
+	var tween := get_tree().create_tween().bind_node(self)
+	tween.tween_property($Music, "volume_db", 0.0, 1.0)
+	tween.play()
 
 
 func _ready() -> void:
 	$Title.text = ProjectSettings.get_setting("application/config/name")
+	$Version.text = "v" + ProjectSettings.get_setting("application/config/version")
 	reset()
 	fixup_all_buttons(self)
 
 
 func _on_play_pressed() -> void:
+	$TabContainer/MainOptions/Play.disconnect("pressed", _on_play_pressed)
 	resume.emit()
+	
+	await get_tree().create_timer(1.0).timeout
+	$TabContainer/MainOptions/Play.connect("pressed", _on_play_pressed)
 
 
 func _on_menu_button_pressed(index: int) -> void:
@@ -69,9 +91,9 @@ func _on_menu_button_pressed(index: int) -> void:
 
 func _on_fullscreen_toggled(button_pressed: bool) -> void:
 	if button_pressed:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
 	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MAXIMIZED)
 
 func _on_invert_y_toggled(button_pressed: bool) -> void:
 	Globals.invert_y = button_pressed
@@ -79,6 +101,10 @@ func _on_invert_y_toggled(button_pressed: bool) -> void:
 
 func _on_fov_value_changed(value: float) -> void:
 	Globals.field_of_view = value
+
+
+func _on_m_sens_value_changed(value: float) -> void:
+	Globals.mouse_sensitivity = value / 100.0
 
 
 func _on_credits_meta_clicked(meta: Variant) -> void:
@@ -89,4 +115,6 @@ func _on_credits_meta_clicked(meta: Variant) -> void:
 
 
 func _on_quit_pressed() -> void:
+	if not Globals.DEBUG:
+		await get_tree().create_timer(0.25).timeout
 	get_tree().quit()
