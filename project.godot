@@ -33,7 +33,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/avpreview/plugin.cfg", "res://addons/qodot/plugin.cfg")
+enabled=PackedStringArray("res://addons/avpreview/plugin.cfg", "res://addons/func_godot/plugin.cfg")
 
 [filesystem]
 

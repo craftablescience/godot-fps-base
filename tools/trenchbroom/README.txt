@@ -1,1 +1,0 @@
-Copy the TrenchBroom binaries and assets here!
