@@ -69,28 +69,6 @@ func _ready() -> void:
 		$SeizureWarning.queue_free()
 		$Menu.notify_menu_shown()
 	
-	$MapManager.connect("game_ended_and_we_should_show_the_credits_now", func() -> void:
-		$Menu.notify_game_ended(false)
-		$MapManager.show_preview_camera(Vector3(-1,-1,1))
-		game_has_ended = true
-		pause_is_allowed = true
-		pause())
-	
-	$MapManager.connect("game_ended_but_we_might_play_it_again", func() -> void:
-		$Menu.notify_game_ended(true)
-		$MapManager.show_preview_camera(Vector3(-1,-1,1))
-		game_has_started = false
-		game_has_ended = false
-		pause_is_allowed = true
-		pause())
-	
-	$MapManager.connect("we_are_in_a_no_pause_cutscene_now", func() -> void:
-		resume() # just to make sure
-		pause_is_allowed = false)
-	
-	$MapManager.connect("we_are_not_in_a_no_pause_cutscene_anymore", func() -> void:
-		pause_is_allowed = true)
-	
 	pause()
 
 
@@ -105,6 +83,32 @@ func _input(event: InputEvent) -> void:
 			resume()
 		else:
 			pause()
+
+
+func _on_map_manager_game_ended_and_we_should_show_the_credits_now() -> void:
+	$Menu.notify_game_ended(false)
+	$MapManager.show_preview_camera(Vector3(-1,-1,1))
+	game_has_ended = true
+	pause_is_allowed = true
+	pause()
+
+
+func _on_map_manager_game_ended_but_we_might_play_it_again() -> void:
+	$Menu.notify_game_ended(true)
+	$MapManager.show_preview_camera(Vector3(-1,-1,1))
+	game_has_started = false
+	game_has_ended = false
+	pause_is_allowed = true
+	pause()
+
+
+func _on_map_manager_we_are_in_a_no_pause_cutscene_now() -> void:
+	resume() # just to make sure
+	pause_is_allowed = false
+
+
+func _on_map_manager_we_are_not_in_a_no_pause_cutscene_anymore() -> void:
+	pause_is_allowed = true
 
 
 func _on_seizure_warning_continue_to_menu() -> void:

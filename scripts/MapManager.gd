@@ -1,9 +1,13 @@
 extends Node3D
 
 
+@warning_ignore("unused_signal")
 signal game_ended_and_we_should_show_the_credits_now()
+@warning_ignore("unused_signal")
 signal game_ended_but_we_might_play_it_again()
+@warning_ignore("unused_signal")
 signal we_are_in_a_no_pause_cutscene_now()
+@warning_ignore("unused_signal")
 signal we_are_not_in_a_no_pause_cutscene_anymore()
 
 

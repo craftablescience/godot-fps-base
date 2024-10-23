@@ -50,5 +50,9 @@ layout_mode = 1
 [node name="SeizureWarning" parent="." instance=ExtResource("7_3x7rn")]
 layout_mode = 1
 
+[connection signal="game_ended_and_we_should_show_the_credits_now" from="MapManager" to="." method="_on_map_manager_game_ended_and_we_should_show_the_credits_now"]
+[connection signal="game_ended_but_we_might_play_it_again" from="MapManager" to="." method="_on_map_manager_game_ended_but_we_might_play_it_again"]
+[connection signal="we_are_in_a_no_pause_cutscene_now" from="MapManager" to="." method="_on_map_manager_we_are_in_a_no_pause_cutscene_now"]
+[connection signal="we_are_not_in_a_no_pause_cutscene_anymore" from="MapManager" to="." method="_on_map_manager_we_are_not_in_a_no_pause_cutscene_anymore"]
 [connection signal="resume" from="Menu" to="." method="resume"]
 [connection signal="continue_to_menu" from="SeizureWarning" to="." method="_on_seizure_warning_continue_to_menu"]
