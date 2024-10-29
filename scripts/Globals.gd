@@ -17,4 +17,3 @@ var GLOBAL_OPTS := {
 var invert_y := false
 var field_of_view := 70.0
 var mouse_sensitivity := 0.1
-var disable_flicker := false

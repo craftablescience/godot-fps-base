@@ -31,19 +31,20 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_7k057")
 [node name="Heading" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.1
+anchor_top = 0.2
 anchor_right = 1.0
-anchor_bottom = 0.2
+anchor_bottom = 0.3
 grow_horizontal = 2
 text = "Photosensitive Seizure Warning"
 label_settings = SubResource("LabelSettings_fxiyr")
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Contents" type="RichTextLabel" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.3
+anchor_top = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 200.0
@@ -54,8 +55,6 @@ bbcode_enabled = true
 text = "A small percentage of people may experience a seizure when exposed to certain visual images, including flashing lights or patterns that may appear in this game. Even people who have no history of seizures or epilepsy may have an undiagnosed condition that can cause these “photosensitive epileptic seizures” while playing video games.
 
 Immediately stop playing and consult a doctor if you experience any symptoms.
-
-This video game contains flickering lights which some people may be sensitive to. If you would like to disable this, [color=#4fcfff][url=\"disable_flicker_and_continue\"]click here[/url][/color] to continue to the game with all flickering lights disabled.
 
 
 
